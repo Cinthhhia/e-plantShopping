@@ -7,6 +7,23 @@ import CartItem from './CartItem';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
+    const dispatch = useDispatch();
+    const CartItems = useSelector((state) => state.cart.items);
+    
+    const calculateTotalQuantity = () => {
+      return CartItems
+        ? CartItems.reduce((total, item) => total + item.quantity, 0)
+        : 0;
+    };
+
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product)); 
+        setAddedToCart((prevState) => ({ 
+          ...prevState, 
+          [product.name]: true, 
+        }));
+    };
 
     const plantsArray = [
         {
@@ -256,14 +273,7 @@ function ProductList({ onHomeClick }) {
         setShowCart(false);
     };
 
-    const [addedToCart, setAddedToCart] = useState({});
-    const handleAddToCart = (product) => {
-        dispatch(addItem(product)); 
-        setAddedToCart((prevState) => ({ 
-          ...prevState, 
-          [product.name]: true, 
-        }));
-    };
+    
 
 
     return (
